@@ -1,21 +1,4 @@
 
-/*编写一个计算器的页面
-第一面 选择计算器计算形状的种类 在点击不同的形状后跳转到不同的页面
-第二页计算正方形的面积 并画出正方形
-第三页计算长方形的面积 并画出长方形
-第四页计算圆的面积 并画出圆
-存在的问题：
-1没有具体的计算公式
-2存在没有使用的代码，后续需要删除保持精确简洁
-3没有丰富的交互
-4文字排版是乱排的，需要后续重新排版
-5还没有实现计算完后按空格或者其他键回到第一面
-6还没有计算按键的位置，没有设置捕捉鼠标点击按键进行跳转即isinrect函数
-7具体的跳转操作是没有调试的，只是提供设计ui的思路，需要在完成调试后重新debug
-8没有调试一定存在大量bug---汪家怡第一版
-
-
-*/
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include<easyx.h>
@@ -58,10 +41,15 @@ struct triangle {
     double h;
     double d;
     double s;
+    char const* dcha1;
+    char const* dcha2;
+    char scha[20];
 }tri;
 struct circle {
     double r;
     double s;
+    char const* dcha1;
+    char scha[20];
 
 }cir;//导入公式
 void calculatesquare(struct square) {
@@ -170,6 +158,7 @@ void displayResults(struct triangle) {
     cout << "Triangle base: " << tri.d << " cm\n";
     cout << "Triangle height: " << tri.h << " cm\n";
     cout << "Triangle area: " << tri.s << " square cm\n";
+    outtextxy(50, 50, "选择的图形是三角形");
 
     outtextxy(50, 150, "底为");
     outtextxy(50, 200, "高为");
@@ -199,8 +188,9 @@ void displayResults(struct circle) {
     cout << fixed << setprecision(3);
     cout << "Circle diameter: " << cir.r << " cm\n";
     cout << "Circle area: " << cir.s << " square cm\n";
+    outtextxy(50, 50, "选择的图形是圆形");
 
-    outtextxy(50, 150, "半径为");
+    outtextxy(50, 150, "直径为");
     outtextxy(50, 250, "面积为");
 
     std::ostringstream oss;
@@ -215,7 +205,6 @@ void displayResults(struct circle) {
     const char* char_array1 = str_number1.c_str();
     outtextxy(250, 150, char_array1);
 }
-
 void handleSquare() {
     squ.dcha1 = dcha1;
     squ.d = strtod(squ.dcha1, NULL);
@@ -228,14 +217,6 @@ void handleSquare() {
     stringstream ss;
     ss << squ.s;
     ss >> squ.scha;
-
-
-
-
-
-
-
-
 
 }
 
@@ -260,28 +241,39 @@ void handleRectangle() {
 }
 
 void handleTriangle() {
-    triangle tri;
-    string unit;
-    cout << "You chose Triangle. Enter the base and height: ";
-    cin >> tri.d >> tri.h;
-    cout << "Is the length in cm or inches? ";
-    cin >> unit;
+    tri.dcha1 = dcha1;
+    tri.d = strtod(tri.dcha1, NULL);
+    tri.dcha2 = dcha2;
+    tri.h = strtod(tri.dcha2, NULL);
+
+    cout << tri.d;
+    cout << unit;
+    if (strcmp(unit, judge) == 0) {
+        tri.d = tri.d * 2.54;
+        tri.h = tri.h * 2.54;
+    };
 
     calculatetriangle(tri);
     displayResults(tri);
+    stringstream ss2;
+    ss2 << tri.s;
+    ss2 >> tri.scha;
+
 }
 
 
 void handleCircle() {
-    circle;cir;
-    string unit;
-    cout << "You chose Circle. Enter the diameter: ";
-    cin >> cir.r;
-    cout << "Is the diameter in cm or inches? ";
-    cin >> unit;
-
+    cir.dcha1 = dcha1;
+    cir.r = strtod(cir.dcha1, NULL);
+    cout << cir.r;
+    cout << unit;
+    if (strcmp(unit, judge) == 0) { cir.r = cir.r * 2.54; };
+    cout << cir.r;
     calculatecircle(cir);
     displayResults(cir);
+    stringstream ss3;
+    ss3 << cir.s;
+    ss3 >> cir.scha;
 
 }
 
@@ -308,21 +300,8 @@ void addpage2() {
 
     InputBox(dcha1, 1000, "输入长");
     InputBox(dcha2, 1000, "输入宽");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
 void addpage3() {
     initgraph(800, 550, EW_SHOWCONSOLE);
     IMAGE img;
@@ -332,7 +311,7 @@ void addpage3() {
 
     InputBox(unit, 1000, "单位,请输入cm或in");
 
-    InputBox(dcha1, 1000, "输入边长");
+    InputBox(dcha1, 1000, "输入直径");
 }
 
 
@@ -357,24 +336,9 @@ void addpage4() {
 
     InputBox(unit, 1000, "单位,请输入cm或in");
 
-    InputBox(dcha1, 1000, "输入边长");
+    InputBox(dcha1, 1000, "输入底");
+    InputBox(dcha2, 1000, "输入高");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //判断鼠标的位置是否在所需要的区域 
@@ -422,15 +386,17 @@ int main() {
 
                 if (msg.x >= 450 && msg.x <= 450 + 150 && msg.y >= 250 && msg.y <= 250 + 50)
                 {
-                    void handleTriangle();
-                    closegraph();
+                    void
+                        closegraph();
                     addpage3();
+                    handleCircle();
                 }
                 if (msg.x >= 630 && msg.x <= 630 + 150 && msg.y >= 250 && msg.y <= 250 + 50)
                 {
-                    void handleCircle();
-                    closegraph();
+                    void
+                        closegraph();
                     addpage4();
+                    handleTriangle();
                 }
                 if (msg.x >= 630 && msg.x <= 630 + 150 && msg.y >= 50 && msg.y <= 50 + 50)
                 {
