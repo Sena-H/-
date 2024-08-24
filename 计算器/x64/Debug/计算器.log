@@ -1,0 +1,4 @@
+﻿  test.cpp
+C:\Users\Thinkbook\Desktop\计算器\计算器\test.cpp(67,28): warning C4244: “参数”: 从“double”转换到“TCHAR”，可能丢失数据
+C:\Users\Thinkbook\Desktop\计算器\计算器\test.cpp(193,5): warning C4551: 缺少参数列表的函数调用
+  计算器.vcxproj -> C:\Users\Thinkbook\Desktop\计算器\x64\Debug\计算器.exe
