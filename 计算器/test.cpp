@@ -1,17 +1,22 @@
 
 /*编写一个计算器的页面
 第一面 选择计算器计算形状的种类 在点击不同的形状后跳转到不同的页面
-第二页计算正方形的面积 
-第三页计算长方形的面积 
-第四页计算圆的面积 
+第二页计算正方形的面积 并画出正方形
+第三页计算长方形的面积 并画出长方形
+第四页计算圆的面积 并画出圆
 存在的问题：
-
-大部分功能已完成，显示，精度等问题仍需完善
----吴世超第二版
+1没有具体的计算公式
+2存在没有使用的代码，后续需要删除保持精确简洁
+3没有丰富的交互
+4文字排版是乱排的，需要后续重新排版
+5还没有实现计算完后按空格或者其他键回到第一面
+6还没有计算按键的位置，没有设置捕捉鼠标点击按键进行跳转即isinrect函数
+7具体的跳转操作是没有调试的，只是提供设计ui的思路，需要在完成调试后重新debug
+8没有调试一定存在大量bug---汪家怡第一版
 
 
 */
-#define _CRT_SECURE_NO_WARNING
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include<easyx.h>
 #include<math.h>
@@ -22,6 +27,8 @@
 #include <string>
 #include <conio.h>
 #include <sstream>
+#include <cstring>
+
 using namespace std;
 
 
@@ -59,7 +66,6 @@ struct circle {
 }cir;//导入公式
 void calculatesquare(struct square) {
     squ.s = squ.d * squ.d;
-    outtextxy(250, 250, squ.s);
 }
 void calculaterectangle(struct rectangle)
 {
@@ -106,6 +112,24 @@ void displayResults(struct square) {
     cout << fixed << setprecision(3);
     cout << "Square side length: " << squ.d << " cm\n";
     cout << "Square area: " << squ.s << " square cm\n";
+
+
+    outtextxy(50, 50, "选择的图形是正方形");
+
+    outtextxy(50, 150, "边长为");
+    outtextxy(50, 250, "面积为");
+
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(3) << squ.s;
+    std::string str_number = oss.str();
+    const char* char_array = str_number.c_str();
+    outtextxy(250, 250, char_array);
+
+    std::ostringstream oss1;
+    oss1 << std::fixed << std::setprecision(3) << squ.d;
+    std::string str_number1 = oss1.str();
+    const char* char_array1 = str_number1.c_str();
+    outtextxy(250, 150, char_array1);
 }
 
 void displayResults(struct rectangle) {
@@ -113,6 +137,32 @@ void displayResults(struct rectangle) {
     cout << "Rectangle length: " << rec.d1 << " cm\n";
     cout << "Rectangle width: " << rec.d2 << " cm\n";
     cout << "Rectangle area: " << rec.s << " square cm\n";
+
+
+    outtextxy(50, 50, "选择的图形是长方形");
+
+    outtextxy(50, 150, "长为");
+    outtextxy(50, 200, "宽为");
+    outtextxy(50, 300, "面积为");
+
+
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(3) << rec.s;
+    std::string str_number = oss.str();
+    const char* char_array = str_number.c_str();
+    outtextxy(250, 300, char_array);
+
+    std::ostringstream oss1;
+    oss1 << std::fixed << std::setprecision(3) << rec.d1;
+    std::string str_number1 = oss1.str();
+    const char* char_array1 = str_number1.c_str();
+    outtextxy(250, 150, char_array1);
+
+    std::ostringstream oss2;
+    oss2 << std::fixed << std::setprecision(3) << rec.d2;
+    std::string str_number2 = oss2.str();
+    const char* char_array2 = str_number2.c_str();
+    outtextxy(250, 200, char_array2);
 }
 
 void displayResults(struct triangle) {
@@ -120,13 +170,52 @@ void displayResults(struct triangle) {
     cout << "Triangle base: " << tri.d << " cm\n";
     cout << "Triangle height: " << tri.h << " cm\n";
     cout << "Triangle area: " << tri.s << " square cm\n";
+
+    outtextxy(50, 150, "底为");
+    outtextxy(50, 200, "高为");
+    outtextxy(50, 300, "面积为");
+
+
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(3) << tri.s;
+    std::string str_number = oss.str();
+    const char* char_array = str_number.c_str();
+    outtextxy(250, 300, char_array);
+
+    std::ostringstream oss1;
+    oss1 << std::fixed << std::setprecision(3) << tri.d;
+    std::string str_number1 = oss1.str();
+    const char* char_array1 = str_number1.c_str();
+    outtextxy(250, 150, char_array1);
+
+    std::ostringstream oss2;
+    oss2 << std::fixed << std::setprecision(3) << tri.h;
+    std::string str_number2 = oss2.str();
+    const char* char_array2 = str_number2.c_str();
+    outtextxy(250, 200, char_array2);
 }
 
 void displayResults(struct circle) {
     cout << fixed << setprecision(3);
     cout << "Circle diameter: " << cir.r << " cm\n";
     cout << "Circle area: " << cir.s << " square cm\n";
+
+    outtextxy(50, 150, "半径为");
+    outtextxy(50, 250, "面积为");
+
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(3) << cir.s;
+    std::string str_number = oss.str();
+    const char* char_array = str_number.c_str();
+    outtextxy(250, 250, char_array);
+
+    std::ostringstream oss1;
+    oss1 << std::fixed << std::setprecision(3) << cir.r;
+    std::string str_number1 = oss1.str();
+    const char* char_array1 = str_number1.c_str();
+    outtextxy(250, 150, char_array1);
 }
+
 void handleSquare() {
     squ.dcha1 = dcha1;
     squ.d = strtod(squ.dcha1, NULL);
@@ -164,7 +253,6 @@ void handleRectangle() {
     };
 
     calculaterectangle(rec);
-    cout << rec.s;
     displayResults(rec);
     stringstream ss1;
     ss1 << rec.s;
@@ -258,8 +346,7 @@ void back() {
     button(250, 250, 150, 50, "长方形");
     button(450, 250, 150, 50, "圆形");
     button(630, 250, 150, 50, "三角形");
-  
-    
+
 }
 void addpage4() {
     initgraph(800, 550, EW_SHOWCONSOLE);
@@ -318,16 +405,6 @@ int main() {
                     handleSquare();
 
 
-
-                    outtextxy(50, 50, "选择的图形是正方形");
-
-                    outtextxy(50, 150, "边长为");
-                    outtextxy(50, 250, "面积为");
-                    outtextxy(50, 350, squ.scha);
-
-                    cout << squ.scha;
-
-                    cout << squ.s;
                 }
 
                 if (msg.x >= 250 && msg.x <= 250 + 150 && msg.y >= 250 && msg.y <= 250 + 50)
@@ -340,12 +417,6 @@ int main() {
                     handleRectangle();
 
 
-
-                    outtextxy(50, 50, "选择的图形是长方形");
-
-                    outtextxy(50, 150, "边长为");
-                    outtextxy(50, 250, "面积为");
-                    outtextxy(50, 350, rec.scha);
 
                 }
 
